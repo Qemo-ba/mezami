@@ -1,0 +1,263 @@
+@import "tailwindcss";
+
+/* =========================================================================
+   DESIGN-TOKENS
+   Hier stehen ALLE Farben, Breakpoints und Schriften der Seite.
+   Änderst du hier einen Wert, ändert er sich auf der ganzen Website.
+   Jeder Token ist danach als Tailwind-Klasse nutzbar,
+   z. B. --color-beige  ->  bg-beige / text-beige / border-beige
+   ========================================================================= */
+@theme {
+  /* --- Farbschema laut Briefing (Punkt 4) --- */
+  --color-weiss: #ffffff; /* Primär: Seitenhintergrund */
+  --color-anthrazit: #23262b; /* Überschriften, Buttons, Footer-Fläche */
+  --color-grau-text: #6f7378; /* Fliesstext / sekundärer Text */
+  --color-linie: #c7c7c7; /* Rahmen, Trennlinien, inaktive Elemente */
+  --color-flaeche: #f5f5f4; /* helle Section-/Kartenflächen */
+  --color-beige: #f7e4c1; /* Akzent – sparsam einsetzen! */
+  --color-beige-aktiv: #efd7ad; /* Beige gedrückt (Touch-Leiste unten) */
+  --color-platzhalter: #9a9da2; /* Hinweistext in Bild-Platzhaltern */
+  --color-footer-text: #d8d9db; /* Fliesstext im dunklen Footer */
+  --color-footer-linie: #3a3e44; /* Trennlinie im dunklen Footer */
+
+  /* --- Eigene Breakpoints (Design nutzt nicht die Tailwind-Standardwerte) ---
+     menu: ab hier volle Desktop-Navigation statt Burger-Menü
+     rail: ab hier steht der Kontakt-Regler rechts statt unten */
+  --breakpoint-menu: 901px;
+  --breakpoint-rail: 1300px;
+
+  /* --- Schriften (geladen in app/layout.tsx über next/font) --- */
+  --font-sans: var(--font-jakarta), "Helvetica Neue", Helvetica, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+}
+
+/* =========================================================================
+   GRUNDLAGEN
+   ========================================================================= */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-weiss);
+    color: var(--color-anthrazit);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-wrap: pretty;
+  }
+
+  a {
+    color: var(--color-anthrazit);
+    text-decoration: none;
+  }
+}
+
+/* =========================================================================
+   WIEDERVERWENDBARE BAUSTEINE
+   Diese Klassen benutzt du in den Komponenten, statt überall dieselben
+   Tailwind-Ketten zu wiederholen.
+   ========================================================================= */
+@layer components {
+  /* --- Layout ----------------------------------------------------------- */
+
+  /* Innenabstand links/rechts – identisch in jeder Section */
+  .abschnitt {
+    padding-inline: clamp(16px, 4vw, 56px);
+  }
+
+  /* Inhaltsbreite: max. 1240px, zentriert */
+  .container-mezami {
+    width: 100%;
+    max-width: 1240px;
+    margin-inline: auto;
+  }
+
+  /* Automatisch umbrechendes Karten-Raster.
+     Die Mindestbreite pro Spalte setzt du per Inline-Style/Utility. */
+  .raster {
+    display: grid;
+  }
+
+  /* --- Typografie ------------------------------------------------------- */
+
+  /* Kleines Label über einer Überschrift ("ÜBERBLICK", "LEISTUNGEN", ...) */
+  .eyebrow {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-grau-text);
+  }
+
+  /* Grosse Hero-Überschrift (nur Startseite) */
+  .titel-hero {
+    font-size: clamp(34px, 5.2vw, 60px);
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+    font-weight: 800;
+  }
+
+  /* H1 der Unterseiten */
+  .titel-seite {
+    font-size: clamp(32px, 4.4vw, 52px);
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    font-weight: 800;
+  }
+
+  /* H2 innerhalb einer Section */
+  .titel-abschnitt {
+    font-size: clamp(27px, 3.4vw, 42px);
+    line-height: 1.14;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+  }
+
+  /* --- Buttons (Briefing Punkt 5) --------------------------------------- */
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+      background-color 160ms ease,
+      color 160ms ease;
+  }
+
+  /* Primär: dunkle Fläche -> Hover füllt sich beige */
+  .btn-primaer {
+    background: var(--color-anthrazit);
+    color: var(--color-weiss);
+    border: 1px solid var(--color-anthrazit);
+  }
+  .btn-primaer:hover {
+    background: var(--color-beige);
+    color: var(--color-anthrazit);
+    border-color: var(--color-beige);
+  }
+
+  /* Sekundär: Outline -> Hover füllt sich beige, Rahmen bleibt dunkel */
+  .btn-sekundaer {
+    background: transparent;
+    color: var(--color-anthrazit);
+    border: 1px solid var(--color-anthrazit);
+  }
+  .btn-sekundaer:hover {
+    background: var(--color-beige);
+    color: var(--color-anthrazit);
+  }
+
+  /* Grössen */
+  .btn-gross {
+    padding: 17px 30px;
+    font-size: 16px;
+  }
+  .btn-mittel {
+    padding: 13px 22px;
+    font-size: 14.5px;
+  }
+  .btn-klein {
+    padding: 12px 22px;
+    font-size: 14.5px;
+  }
+  .btn-breit {
+    padding: 19px 22px;
+    font-size: 16px;
+    width: 100%;
+  }
+
+  /* --- Karten & Icons --------------------------------------------------- */
+
+  .karte {
+    background: var(--color-weiss);
+    border: 1px solid var(--color-linie);
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgb(35 38 43 / 0.05);
+  }
+
+  /* Karte, die beim Hover leicht "abhebt" (Leistungen-Seite) */
+  .karte-hover {
+    transition: box-shadow 180ms ease;
+  }
+  .karte-hover:hover {
+    box-shadow: 0 8px 24px rgb(35 38 43 / 0.09);
+  }
+
+  /* Beiges Quadrat hinter einem Icon */
+  .icon-kachel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 46px;
+    height: 46px;
+    border-radius: 2px;
+    background: var(--color-beige);
+    color: var(--color-anthrazit);
+  }
+  .icon-kachel-klein {
+    width: 40px;
+    height: 40px;
+  }
+  .icon-kachel-mini {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* --- Formular --------------------------------------------------------- */
+
+  .feld-label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 13.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-grau-text);
+  }
+
+  .feld {
+    padding: 15px 16px;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--color-anthrazit);
+    background: var(--color-weiss);
+    border: 1px solid var(--color-linie);
+    border-radius: 2px;
+    outline: none;
+  }
+  .feld:focus {
+    border-color: var(--color-anthrazit);
+  }
+  .feld::placeholder {
+    color: var(--color-platzhalter);
+  }
+
+  /* --- Bild-Platzhalter (schraffierte Fläche, solange kein Foto da ist) -- */
+  .bild-platzhalter {
+    background-color: var(--color-flaeche);
+    background-image: repeating-linear-gradient(
+      135deg,
+      #eaeae8 0 10px,
+      var(--color-flaeche) 10px 20px
+    );
+  }
+}
+
+/* Standard-Hover für Links, die keine eigene Hover-Regel haben
+   (so war es auch im Design-Prototyp). Buttons/Footer überschreiben das. */
+@layer base {
+  a:hover {
+    color: var(--color-grau-text);
+  }
+}
